@@ -11,3 +11,14 @@ function createGameForm(title, releaseDate, genre,publisher, imageUrl, descripti
 
 
 
+/*var formular = new createGameForm('Ion cu vaca', 1223456, 'M','IOn', 'asdsd',"asddasd")
+
+console.log(formular);
+
+
+var formular1 = {
+    titlu: "",
+    genere: genre
+}
+
+console.log();*/
