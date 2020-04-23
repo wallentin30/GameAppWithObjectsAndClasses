@@ -45,4 +45,25 @@ fetchAPI.prototype.createGameRequest = function(gameObj) {
     })
 }
 
-
+fetchAPI.prototype.editGame = function(id,gameObj) {
+    return fetch(`${this.serverURL}/games/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type' : "application/x-www-form-urlencoded"
+        },
+        body: gameObj
+    }).then(function(response) {
+        console.log("PUT response ", response);
+        
+        return response.json()
+    })
+}
+fetchAPI.prototype.reloadDB = function() {
+    return fetch(`${this.serverURL}/regenerate-games`, {
+        method: 'GET',
+        headers: {
+            'Content-Type' : "application/x-www-form-urlencoded",
+            'Connection' : 'keep-alive'
+        }
+    });
+}
