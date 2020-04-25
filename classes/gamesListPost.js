@@ -1,4 +1,3 @@
-// functia contructor
 function gamePost(id,title,imageUrl,description) {
     this._id = id;
     this.title = title;
@@ -18,10 +17,6 @@ gamePost.prototype.displayGames = function() {
                 <button class="delete-btn">Delete Game</button>
                 <button class="editBtn">Edit Game</button>       
     `;
-   
-
-    
 
     return divContainer;
 }
-

@@ -9,7 +9,6 @@ fetchAPI.prototype.getGameList = function() {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(function(response) {
-        //console.log('Raspuns de la server: ', response);
         return response.json();
     })
 } 
@@ -39,7 +38,7 @@ fetchAPI.prototype.createGameRequest = function(gameObj) {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: gameObject
+        body: gameObj
     }).then(function(response) {
         return response.json();
     })
@@ -53,8 +52,6 @@ fetchAPI.prototype.editGame = function(id,gameObj) {
         },
         body: gameObj
     }).then(function(response) {
-        console.log("PUT response ", response);
-        
         return response.json()
     })
 }

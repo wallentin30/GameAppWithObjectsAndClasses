@@ -6,7 +6,6 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
     for(let i = 0; i < gameServerRequest.length; i++) {
         const takeGames = gameServerRequest[i];
         
-        //obiect nou creat cu ajutorul functiei contructor din gamesListPosts.js
         const postDOM = new gamePost(
             takeGames._id,
             takeGames.title,
@@ -27,7 +26,6 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
                    
                     if(delGame.succes){
                         removeDeletedElementFromDOM(document.querySelector('.divContainer'));
-                        //console.log(`The game with id: ${divId} was successfully deleted!`);
                         
                     } else {
                         alert("Could not delete game, something went wrong");
@@ -43,8 +41,7 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
     
 })();
 
- function createEditForm(gameContainer) {
-    console.log(gameContainer);
+function createEditForm(gameContainer) {
     
     if (!gameContainer.querySelector('#updateForm')) {
 
@@ -81,7 +78,6 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
         });
 
         gameContainer.querySelector('.updateBtn').addEventListener('click', function(){
-            //event.preventDefault();
             const updatedGameTitle = document.querySelector('#updatedGameTitle');
             const updatedGameDescription = document.querySelector('#updatedGameDescription');
             const updatedGameImageUrl = document.querySelector('#updatedGameImageUrl');
@@ -113,12 +109,47 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
 
 }
 
- function removeDeletedElementFromDOM(domElement){
+function removeDeletedElementFromDOM(domElement){
      domElement.remove();
 }
 
+document.querySelector(".submitBtn").addEventListener("click", function(event) {
+    event.preventDefault();
 
-(async function() {
+    const createdGame = new createGameForm(
+        document.getElementById("gameTitle"), 
+        document.getElementById("gameRelease"), 
+        document.getElementById("gameGenre"), 
+        document.getElementById("gamePublisher"), 
+        document.getElementById("gameImageUrl"), 
+        document.getElementById("gameDescription"));
+
+    createdGame.validateFormElement(createdGame.title, "The title is required!");
+    createdGame.validateFormElement(createdGame.genre, "The genre is required!");
+    createdGame.validateFormElement(createdGame.publisher, "The image URL is required!");
+    createdGame.validateFormElement(createdGame.releaseDate, "The release date is required!");
+
+    createdGame.validateReleaseTimestampElement(createdGame.releaseDate, "The release date you provided is not a valid timestamp!");
+
+    if (createdGame.title.value !== "" && createdGame.genre.value !== "" && createdGame.imageUrl.value !== "" && createdGame.releaseDate.value !== "") {
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("title", createdGame.title.value);
+        urlencoded.append("releaseDate", createdGame.releaseDate.value);
+        urlencoded.append("genre", createdGame.genre.value);
+        urlencoded.append("publisher", createdGame.publisher.value);
+        urlencoded.append("imageUrl", createdGame.imageUrl.value);
+        urlencoded.append("description", createdGame.description.value);
+
+        (async function createGame() {
+            const request = await apiServer.createGameRequest(urlencoded);
+            const newGameInDom = createdGame.displayCreatedGame(request);
+            document.querySelector('.container').appendChild(newGameInDom);
+            
+        })();
+    }
+});
+
+async function reload() {
     const reloadDataBase = document.createElement('button');
     reloadDataBase.setAttribute('class', 'reloadDB');
     reloadDataBase.innerHTML = "Reload DataBase";
@@ -141,11 +172,10 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
         if (alertBox === true) {   
             (async function(){
                 const dbLoader = await apiServer.reloadDB();
-                console.log(dbLoader);
-                
                 return dbLoader;
             })();
         }
     });
-})();
+}
 
+reload();
