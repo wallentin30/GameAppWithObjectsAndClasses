@@ -6,18 +6,18 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
     for(let i = 0; i < gameServerRequest.length; i++) {
         const takeGames = gameServerRequest[i];
         
-        const postDOM = new gamePost(
+        const postGame = new gamePost(
             takeGames._id,
             takeGames.title,
             takeGames.imageUrl,
             takeGames.description
             )
         
-        const postGamesInDom = postDOM.displayGames();
-        document.querySelector('.container').appendChild(postGamesInDom);
+        const addGame = postGame.displayGame();
+        document.querySelector('.container').appendChild(addGame);
        
        
-        document.getElementById(`${postDOM._id}`).addEventListener("click", async function(){
+        document.getElementById(`${postGame._id}`).addEventListener("click", async function(){
 
             
                 if (event.target.classList.contains('delete-btn')) {

@@ -5,7 +5,7 @@ function gamePost(id,title,imageUrl,description) {
     this.description = description;
 }
 
-gamePost.prototype.displayGames = function() {
+gamePost.prototype.displayGame = function() {
     const divContainer = document.createElement('div');
     divContainer.setAttribute('id', `${this._id}`);
     divContainer.setAttribute('class', 'divContainer');
