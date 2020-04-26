@@ -1,23 +1,23 @@
 const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
 
 
-(async function gamesFromServer() {
-    const gameServerRequest = await apiServer.getGameList();
+(async function() {
+    const gameServerRequest = await apiServer.getGamesList();
     for(let i = 0; i < gameServerRequest.length; i++) {
-        const takeGames = gameServerRequest[i];
+        const request = gameServerRequest[i];
         
-        const postGame = new gamePost(
-            takeGames._id,
-            takeGames.title,
-            takeGames.imageUrl,
-            takeGames.description
+        const game = new Game(
+            request._id,
+            request.title,
+            request.imageUrl,
+            request.description
             )
         
-        const addGame = postGame.displayGame();
+        const addGame = game.displayGame();
         document.querySelector('.container').appendChild(addGame);
        
        
-        document.getElementById(`${postGame._id}`).addEventListener("click", async function(){
+        document.getElementById(`${game._id}`).addEventListener("click", async function(){
 
             
                 if (event.target.classList.contains('delete-btn')) {
@@ -140,14 +140,53 @@ document.querySelector(".submitBtn").addEventListener("click", function(event) {
         urlencoded.append("imageUrl", createdGame.imageUrl.value);
         urlencoded.append("description", createdGame.description.value);
 
-        (async function createGame() {
-            const request = await apiServer.createGameRequest(urlencoded);
-            const newGameInDom = createdGame.displayCreatedGame(request);
-            document.querySelector('.container').appendChild(newGameInDom);
-            
-        })();
+        createGame(urlencoded)
+       
     }
+    
+    
 });
+
+async function createGame(urlencoded) {
+
+    const request = await apiServer.createGameRequest(urlencoded);
+
+     
+    const game = new Game(
+        request._id,
+        request.title,
+        request.imageUrl,
+        request.description
+        )
+    
+    const addGame = game.displayGame();
+    
+    document.querySelector('.container').appendChild(addGame);
+
+    document.getElementById(`${request._id}`).addEventListener("click", async function(){
+
+            
+        if (event.target.classList.contains('delete-btn')) {
+            const divId = event.target.parentElement.getAttribute('id');
+            const delGame = await apiServer.deleteGame(divId);
+           
+            if(delGame.succes){
+                removeDeletedElementFromDOM(document.querySelector('.divContainer'));
+                
+            } else {
+                alert("Could not delete game, something went wrong");
+            } 
+        }else if (event.target.classList.contains('editBtn')) {
+    
+                createEditForm(event.target.parentElement)
+                
+    }   
+    });
+    
+
+    
+}
+
 
 async function reload() {
     const reloadDataBase = document.createElement('button');

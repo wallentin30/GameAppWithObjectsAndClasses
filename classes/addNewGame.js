@@ -35,19 +35,3 @@ createGameForm.prototype.buildErrorMessage = function (inputEl, errosMsg){
     errorMsgElement.innerHTML = errosMsg;
     inputEl.after(errorMsgElement);
 }
-
-createGameForm.prototype.displayCreatedGame = function(request) {
-    const divContainer = document.createElement('div');
-    divContainer.setAttribute('id', `${request._id}`);
-    divContainer.setAttribute('class', 'divContainer');
-    divContainer.innerHTML = `
-                <h1>${request.title}</h1>
-                <p><strong>GAME ID: '${request._id}'</strong></p>
-                <img class='imageUrl' src='${request.imageUrl}'>
-                <p class='description'>${request.description}</p> 
-                <button class="delete-btn">Delete Game</button>
-                <button class="editBtn">Edit Game</button>       
-    `;
-
-    return divContainer;
-}

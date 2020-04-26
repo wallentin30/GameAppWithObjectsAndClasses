@@ -1,11 +1,11 @@
-function gamePost(id,title,imageUrl,description) {
+function Game(id,title,imageUrl,description) {
     this._id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
 }
 
-gamePost.prototype.displayGame = function() {
+Game.prototype.displayGame = function() {
     const divContainer = document.createElement('div');
     divContainer.setAttribute('id', `${this._id}`);
     divContainer.setAttribute('class', 'divContainer');

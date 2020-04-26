@@ -2,7 +2,7 @@ function fetchAPI(serverURL) {
     this.serverURL = serverURL;
 }
 
-fetchAPI.prototype.getGameList = function() {
+fetchAPI.prototype.getGamesList = function() {
     return fetch(`${this.serverURL}/games`,{
         method: 'GET',
         headers: {
