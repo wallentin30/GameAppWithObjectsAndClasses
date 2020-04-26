@@ -3,7 +3,7 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
 
 (async function() {
     const gameServerRequest = await apiServer.getGamesList();
-    for(let i = 0; i < gameServerRequest.length; i++) {
+    for(let i = gameServerRequest.length-1; i >= 0 ; i--) {
         const request = gameServerRequest[i];
         
         const game = new Game(
@@ -19,13 +19,18 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
        
         document.getElementById(`${game._id}`).addEventListener("click", async function(){
 
+            console.log(event.target.parentElement);
+            
             
                 if (event.target.classList.contains('delete-btn')) {
                     const divId = event.target.parentElement.getAttribute('id');
+                    const gameID = document.getElementById(`${game._id}`);
                     const delGame = await apiServer.deleteGame(divId);
+                    
                    
                     if(delGame.succes){
-                        removeDeletedElementFromDOM(document.querySelector('.divContainer'));
+                        removeDeletedElementFromDOM(gameID);
+                        console.log(divId);
                         
                     } else {
                         alert("Could not delete game, something went wrong");
@@ -161,17 +166,22 @@ async function createGame(urlencoded) {
     
     const addGame = game.displayGame();
     
-    document.querySelector('.container').appendChild(addGame);
+    const allGamesContainer = document.querySelector('.container');
+    allGamesContainer.insertBefore(addGame, allGamesContainer.childNodes[0]);
+    // document.querySelector('.container').insertBefore(addGame);
 
     document.getElementById(`${request._id}`).addEventListener("click", async function(){
 
             
         if (event.target.classList.contains('delete-btn')) {
             const divId = event.target.parentElement.getAttribute('id');
+            const gameID = document.getElementById(`${game._id}`);
             const delGame = await apiServer.deleteGame(divId);
+            console.log('divID ', divId);
+            
            
             if(delGame.succes){
-                removeDeletedElementFromDOM(document.querySelector('.divContainer'));
+                removeDeletedElementFromDOM(gameID);
                 
             } else {
                 alert("Could not delete game, something went wrong");
