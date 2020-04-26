@@ -19,9 +19,6 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
        
         document.getElementById(`${game._id}`).addEventListener("click", async function(){
 
-            console.log(event.target.parentElement);
-            
-            
                 if (event.target.classList.contains('delete-btn')) {
                     const divId = event.target.parentElement.getAttribute('id');
                     const gameID = document.getElementById(`${game._id}`);
@@ -30,7 +27,6 @@ const apiServer = new fetchAPI('https://games-app-siit.herokuapp.com');
                    
                     if(delGame.succes){
                         removeDeletedElementFromDOM(gameID);
-                        console.log(divId);
                         
                     } else {
                         alert("Could not delete game, something went wrong");
@@ -121,7 +117,7 @@ function removeDeletedElementFromDOM(domElement){
 document.querySelector(".submitBtn").addEventListener("click", function(event) {
     event.preventDefault();
 
-    const createdGame = new createGameForm(
+    const createdGame = new GameCreator(
         document.getElementById("gameTitle"), 
         document.getElementById("gameRelease"), 
         document.getElementById("gameGenre"), 
@@ -176,9 +172,7 @@ async function createGame(urlencoded) {
             const divId = event.target.parentElement.getAttribute('id');
             const gameID = document.getElementById(`${game._id}`);
             const delGame = await apiServer.deleteGame(divId);
-            console.log('divID ', divId);
-            
-           
+
             if(delGame.succes){
                 removeDeletedElementFromDOM(gameID);
                 
