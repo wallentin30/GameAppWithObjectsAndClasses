@@ -168,8 +168,7 @@ async function createGame(urlencoded) {
     
     const allGamesContainer = document.querySelector('.container');
     allGamesContainer.insertBefore(addGame, allGamesContainer.childNodes[0]);
-    // document.querySelector('.container').insertBefore(addGame);
-
+    
     document.getElementById(`${request._id}`).addEventListener("click", async function(){
 
             
